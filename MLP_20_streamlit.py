@@ -42,14 +42,26 @@ class MLP:
 # 初始化 MLP 模型
 mlp_model = MLP(input_size=54, hidden_size=64, output_size=10)
 
-# 自動加載預設的 MLP 模型
-model_path = "mlp_model09.npz"  # 預設模型文件
-if os.path.exists(model_path):
-    mlp_model.load_model(model_path)
-    st.success(f"已自動加載預設模型：{model_path}")
-
 # Streamlit App 界面設置
 st.title("手寫數字識別")
+
+# 讓使用者選擇是否加載模型
+model_choice = st.selectbox("選擇模型加載方式", ("自動加載預設模型", "手動上傳模型"))
+
+if model_choice == "自動加載預設模型":
+    # 嘗試自動加載預設的 MLP 模型
+    model_path = "mlp_model09.npz"  # 預設模型文件
+    if os.path.exists(model_path):
+        mlp_model.load_model(model_path)
+        st.success(f"已自動加載預設模型：{model_path}")
+    else:
+        st.warning("未找到預設模型文件，請上傳模型")
+
+elif model_choice == "手動上傳模型":
+    model_file = st.file_uploader("上傳 MLP 模型 (.npz)", type=["npz"])
+    if model_file:
+        mlp_model.load_model(model_file)
+        st.success("模型已成功加載")
 
 # 選擇上傳圖片或即時手寫
 option = st.selectbox("選擇輸入方式", ("即時手寫", "上傳圖片"))
