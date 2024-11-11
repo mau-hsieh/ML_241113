@@ -42,17 +42,17 @@ class MLP:
 # 初始化 MLP 模型
 mlp_model = MLP(input_size=54, hidden_size=64, output_size=10)
 
+# 自動加載預設的 MLP 模型
+model_path = "mlp_model09.npz"  # 預設模型文件
+if os.path.exists(model_path):
+    mlp_model.load_model(model_path)
+    st.success(f"已自動加載預設模型：{model_path}")
+
 # Streamlit App 界面設置
 st.title("手寫數字識別")
 
-# 加載模型文件
-model_file = st.file_uploader("上傳 MLP 模型 (.npz)", type=["npz"])
-if model_file:
-    mlp_model.load_model(model_file)
-    st.success("模型已成功加載")
-
 # 選擇上傳圖片或即時手寫
-option = st.selectbox("選擇輸入方式", ( "即時手寫","上傳圖片"))
+option = st.selectbox("選擇輸入方式", ("即時手寫", "上傳圖片"))
 
 if option == "上傳圖片":
     uploaded_file = st.file_uploader("請上傳手寫數字圖片", type=["png", "jpg", "jpeg"])
@@ -96,8 +96,6 @@ elif option == "即時手寫":
         img_array[img_array.sum(axis=2) == 0] = [0, 0, 0]  # 設置為黑色
         img_array[img_array.sum(axis=2) != 0] = [255, 255, 255]  # 設置為白色
         image = Image.fromarray(img_array, "RGB").convert("L")
-                # 確保筆劃顏色與背景色的對比足夠強
-
 
         binary_image = image.point(lambda p: 255 if p > 127 else 0)
         binary_cv_image = np.array(binary_image)
