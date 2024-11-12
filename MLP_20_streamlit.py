@@ -46,7 +46,7 @@ mlp_model = MLP(input_size=54, hidden_size=64, output_size=10)
 st.title("手寫數字識別")
 
 # 讓使用者選擇是否加載模型
-model_choice = st.selectbox("選擇模型加載方式", ("自動加載預設模型", "手動上傳模型"))
+model_choice = st.selectbox("選擇模型加載方式", ("自動加載預設模型 Cross_Entropy :","自動加載預設模型 MSE :", "手動上傳模型"))
 
 if model_choice == "自動加載預設模型 Cross_Entropy :":
     # 嘗試自動加載預設的 MLP 模型
