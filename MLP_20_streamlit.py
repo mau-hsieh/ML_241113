@@ -48,9 +48,18 @@ st.title("手寫數字識別")
 # 讓使用者選擇是否加載模型
 model_choice = st.selectbox("選擇模型加載方式", ("自動加載預設模型", "手動上傳模型"))
 
-if model_choice == "自動加載預設模型":
+if model_choice == "自動加載預設模型 Cross_Entropy :":
     # 嘗試自動加載預設的 MLP 模型
     model_path = "mlp_model09.npz"  # 預設模型文件
+    if os.path.exists(model_path):
+        mlp_model.load_model(model_path)
+        st.success(f"已自動加載預設模型：{model_path}")
+    else:
+        st.warning("未找到預設模型文件，請上傳模型")
+
+elif model_choice == "自動加載預設模型 MSE :":
+        # 嘗試自動加載預設的 MLP 模型
+    model_path = "mlp_model_mse_09.npz"  # 預設模型文件
     if os.path.exists(model_path):
         mlp_model.load_model(model_path)
         st.success(f"已自動加載預設模型：{model_path}")
