@@ -116,12 +116,13 @@ elif option == "即時手寫":
         cropped_image = binary_cv_image[y:y+h, x:x+w]
 
         if cropped_image.size != 0:
+            if st.button("預測"):
+                predicted_digit = mlp_model.predict(flattened_image)[0]
+                st.write(f"預測結果：{predicted_digit}")
             resized_image = cv2.resize(cropped_image, (6, 9), interpolation=cv2.INTER_NEAREST)
             st.image(resized_image, caption="處理後的 9x6 黑白圖像", width=120)
             
             flattened_image = resized_image.flatten().reshape(1, -1)
-            if st.button("預測"):
-                predicted_digit = mlp_model.predict(flattened_image)[0]
-                st.write(f"預測結果：{predicted_digit}")
+
         else:
             st.warning("請在畫布上繪製數字再進行處理")
